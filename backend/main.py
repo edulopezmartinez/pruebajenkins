@@ -1,16 +1,58 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, make_response, current_app
 from pymongo import MongoClient
 import hashlib
-import os.path
-
+from functools import update_wrapper
+from datetime import timedelta
 
 app = Flask(__name__, static_url_path='')
-
 
 client = MongoClient('localhost', 27017)
 db = client.pitufos
 
-@app.route('/recommendation', methods=['GET'])
+
+def crossdomain(origin=None, methods=None, headers=None,
+                max_age=21600, attach_to_all=True,
+                automatic_options=True):
+    if methods is not None:
+        methods = ', '.join(sorted(x.upper() for x in methods))
+    if headers is not None and not isinstance(headers, str):
+        headers = ', '.join(x.upper() for x in headers)
+    if not isinstance(origin, str):
+        origin = ', '.join(origin)
+    if isinstance(max_age, timedelta):
+        max_age = max_age.total_seconds()
+
+    def get_methods():
+        if methods is not None:
+            return methods
+
+        options_resp = current_app.make_default_options_response()
+        return options_resp.headers['allow']
+
+    def decorator(f):
+        def wrapped_function(*args, **kwargs):
+            if automatic_options and request.method == 'OPTIONS':
+                resp = current_app.make_default_options_response()
+            else:
+                resp = make_response(f(*args, **kwargs))
+            if not attach_to_all and request.method != 'OPTIONS':
+                return resp
+
+            h = resp.headers
+
+            h['Access-Control-Allow-Origin'] = origin
+            h['Access-Control-Allow-Methods'] = get_methods()
+            h['Access-Control-Max-Age'] = str(max_age)
+            if headers is not None:
+                h['Access-Control-Allow-Headers'] = headers
+            return resp
+
+        f.provide_automatic_options = False
+        return update_wrapper(wrapped_function, f)
+    return decorator
+
+@app.route('/recommendation', methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*')
 def get_questions():
     recommendation = db.recommendation
     output = []
@@ -47,7 +89,8 @@ def delete_questions():
 
     return jsonify({'result': output})
 
-@app.route('/users', methods=['GET'])
+@app.route('/users', methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*')
 def get_users():
     users = db.users
     output = []
@@ -99,7 +142,8 @@ def delete_users():
 
 
 
-@app.route('/projects', methods=['GET'])
+@app.route('/projects', methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*')
 def get_projects():
     projects = db.projects
     output = []
@@ -129,16 +173,5 @@ def save_projects():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, ssl_context='adhoc')
+    app.run(debug=True)
