@@ -1,7 +1,5 @@
-// App.js
 import React, { Component } from 'react';
-
-class App extends Component {
+class Recomendacion extends Component {
   state = {
     SistemaDeRecomendacion: []
   };
@@ -31,5 +29,4 @@ class App extends Component {
     );
   }
 }
-
-export default App;
+export default Recomendacion;
