@@ -1,15 +1,22 @@
 body {
-    background-image: url(/img/fondopri.jpg);
+    background-image: url(/img/fondo2trans.jpg);
+    background-repeat: no-repeat;
+    height: 100%;
     background-size: cover;
     margin: 0;
 }
 
-.header2 {
-    background-color: #000;
-    padding: 0;
-    margin: 0 auto;
-}
 
+.header2 {
+    background-color: #8B8888;
+    padding: 10px 0;
+    margin: 0 auto;
+    font-family: 'Dosis', sans-serif;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-color: #000;
+}
 
 .header2 li {
     display: inline;
@@ -17,19 +24,45 @@ body {
     margin-left: 40px;
 }
 
+.formacion h1{
+    text-align: center;
+    font-size: 1.7em;
+    color: #585857;
+    letter-spacing: 4px;
+}
+.formacion h2 {
+    text-align: center;
+    font-size: 1.2em;
+    color: #585857;
+    letter-spacing: 8px;
+}
+
+.divHorario, .divTemario{
+    margin-top: 20px;
+}
+
+.divText{
+    margin-bottom:
+}
+
+
 .content {
     padding: 20px;
     margin-left: 20px;
 }
 
+.img{
+    margin-left:0px;
+}
+
 h1, h2, p, ul, li {
     font-family: sans-serif;
 }
-ul.header2 li a {
+header.header2 ul li a {
     color: #fff;
     font-weight: bold;
     text-decoration: none;
-    padding: 20px;
+    padding: 10px;
     display: inline-block;
 }
 
@@ -37,15 +70,9 @@ ul.header2 li a {
     background-color: #D3CCCC;
 }
 
-
-
-
 /* FontAwesome for working BootSnippet :> */
 
 @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
-#team {
-    background: #eee !important;
-}
 
 .btn-primary:hover,
 .btn-primary:focus {
@@ -62,19 +89,18 @@ ul.header2 li a {
 }
 
 section {
-    padding: 60px 0;
+    padding: 10px 0;
 }
 
 section .section-title {
     text-align: center;
-    color: #007b5e;
     margin-bottom: 50px;
     text-transform: uppercase;
 }
 
 #team .card {
     border: none;
-    background: #ffffff;
+    background: #F6F3F3;
 }
 
 .image-flip:hover .backside,
@@ -157,6 +183,7 @@ section .section-title {
 .backside .card a {
     font-size: 18px;
     color: #007b5e !important;
+
 }
 
 .frontside .card .card-title,
@@ -168,5 +195,36 @@ section .section-title {
     width: 120px;
     height: 120px;
     border-radius: 50%;
+}
+
+main {
+  position: relative;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding: 1em;
+  background: rgba(255, 255, 255, 0.9) border-box;
+  overflow: hidden;
+  border-radius: .3em;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0.5em 1em rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+  width: 70%;
+}
+
+main::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: -30px;
+  z-index: -1;
+  -webkit-filter: blur(20px);
+  filter: blur(20px);
+}
+
+p{
+   font-size: 0.9em;
+   letter-spacing: 1px;
 }
 
