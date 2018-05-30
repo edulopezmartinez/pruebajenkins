@@ -10,7 +10,7 @@ class Recomendacion extends Component {
   
   async componentDidMount() {
     try {
-      const res = await fetch('http://localhost:5000/recommendation');
+      const res = await fetch('http://localhost:8000/recommendation');
       const recommendation = await res.json();
       
       this.setState({
@@ -38,6 +38,7 @@ class Recomendacion extends Component {
 
   render() {
     return (
+     <main class = "recomendacion">
       <form className="col-md-12" onSubmit={this.handleSubmit}>
         {
           this.state.recommendation.map(item => (
@@ -45,6 +46,7 @@ class Recomendacion extends Component {
         ))}
         <button type="submit" className="btn btn-primary">Enviar</button>
       </form>
+     </main>
     );
   }
 }

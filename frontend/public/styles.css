@@ -210,6 +210,8 @@ main {
   width: 70%;
 }
 
+
+
 main::before {
   content: '';
   position: absolute;

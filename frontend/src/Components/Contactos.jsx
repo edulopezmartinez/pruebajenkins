@@ -3,23 +3,19 @@ import React, { Component } from "react";
 class Contactos extends Component {
 
   state = {
-    Contactos: [],
     contacto: [
-        {'email':'laura@gmail.com', 'name':'Laura', 'lastname':'Martin', 'img':'img/contacto1.png', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis est id purus porta efficitur. Nulla et metus sit amet lectus vestibulum sodales. Donec egestas porttitor sodales. Sed at facilisis odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ultricies libero a sagittis ullamcorper. '},
-        {'email':'carlos@gmail.com', 'name':'Carlos', 'lastname':'Alonso', 'img':'img/contacto2.png', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis est id purus porta efficitur. Nulla et metus sit amet lectus vestibulum sodales. Donec egestas porttitor sodales. Sed at facilisis odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ultricies libero a sagittis ullamcorper. '},
-        {'email':'sergio@gmail.com', 'name':'Sergio', 'lastname':'Marino', 'img':'img/contacto3.png', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis est id purus porta efficitur. Nulla et metus sit amet lectus vestibulum sodales. Donec egestas porttitor sodales. Sed at facilisis odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ultricies libero a sagittis ullamcorper. '},
-        {'email':'edu@gmail.com', 'name':'Edu', 'lastname':'Lopez', 'img':'img/contacto4.png', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis est id purus porta efficitur. Nulla et metus sit amet lectus vestibulum sodales. Donec egestas porttitor sodales. Sed at facilisis odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ultricies libero a sagittis ullamcorper.'},
-        {'email':'bea@gmail.com', 'name':'Bea', 'lastname':'Redondo', 'img':'img/contacto5.png', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis est id purus porta efficitur. Nulla et metus sit amet lectus vestibulum sodales. Donec egestas porttitor sodales. Sed at facilisis odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ultricies libero a sagittis ullamcorper.  '}
-    ]
+     ]
   };
 
   async componentDidMount() {
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/');
-      const Contactos = await res.json();
+      const res = await fetch('http://localhost:8000/users');
+      const users = await res.json();
+
       this.setState({
-        Contactos
+        contacto: users.result,
       });
+      console.log(this.state);
     } catch (e) {
       console.log(e);
     }
@@ -30,7 +26,7 @@ class Contactos extends Component {
     <section id="team" class="pb-5">
         <div class ="container">
         <div class = "row">
-{this.state.contacto.map(item => (
+        {this.state.contacto.map(item => (
         <div class="col-xs-12 col-sm-6 col-md-4">
             <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                 <div class="mainflip">
