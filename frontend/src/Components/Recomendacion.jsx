@@ -10,7 +10,7 @@ class Recomendacion extends Component {
   
   async componentDidMount() {
     try {
-      const res = await fetch('http://localhost:8000/recommendation');
+      const res = await fetch('http://back:8000/recommendation');
       const recommendation = await res.json();
       
       this.setState({
