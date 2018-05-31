@@ -26,12 +26,12 @@ class Formacion extends Component {
                 <div class="row">
                     <div class="col-sm">
                         <p>
-                        <a className="btn btn-outline-secondary btn-lg btn-block" href="http://localhost:8000/horario.pdf" target="_blank"> Ver</a>
+                        <a className="btn btn-outline-secondary btn-lg btn-block" href="http://back:8000/horario.pdf" target="_blank"> Ver</a>
                         </p>
                     </div>
                     <div class="col-sm">
                         <p>
-                        <a className="btn btn-outline-dark btn-lg btn-block" href="http://localhost:8000/horario.xlsx" download> Descargar</a>
+                        <a className="btn btn-outline-dark btn-lg btn-block" href="http://back:8000/horario.xlsx" download> Descargar</a>
                         </p>
                     </div>
                 </div>
@@ -43,12 +43,12 @@ class Formacion extends Component {
                 <div class="row">
                     <div class="col-sm">
                         <p>
-                        <a className="btn btn-outline-secondary btn-lg btn-block" href="http://localhost:8000/temario.pdf" target="_blank"> Ver</a>
+                        <a className="btn btn-outline-secondary btn-lg btn-block" href="http://back:8000/temario.pdf" target="_blank"> Ver</a>
                         </p>
                     </div>
                     <div class="col-sm">
                         <p>
-                        <a className="btn btn-outline-dark btn-lg btn-block" href="http://localhost:8000/temario.pptx" download> Descargar</a>
+                        <a className="btn btn-outline-dark btn-lg btn-block" href="http://back:8000/temario.pptx" download> Descargar</a>
                         </p>
                     </div>
                 </div>
