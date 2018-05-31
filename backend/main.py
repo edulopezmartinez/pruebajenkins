@@ -6,7 +6,7 @@ from datetime import timedelta
 
 app = Flask(__name__, static_url_path='')
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('db', 27017)
 db = client.pitufos
 
 
