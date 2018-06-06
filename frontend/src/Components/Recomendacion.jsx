@@ -8,15 +8,20 @@ class Recomendacion extends Component {
     recommendation: [],
     stylesPrev: { display: "none" },
     stylesNext: { display: ""},
-    index: 0
+    index: 0,
+    value: [],
+
   };
+
+  
 
   async componentDidMount() {
     try {
-      const res = await fetch('http://localhost:8000/recommendation');
+      const res = await fetch('http://localhost:8000/recommendationStart');
       const recommendation = await res.json();
       this.setState({
         recommendation: recommendation.result,
+        
         //recommendation: [1,2,3]
       });
     } catch (e) {
@@ -24,15 +29,24 @@ class Recomendacion extends Component {
     }
   }
 
+
+  handleChange(event) {
+    console.log('holi');
+    this.state.value.push(event.target.value)
+    //this.setState({value : this.state.value});
+    console.log('holi' + this.state.value);
+  }
+
   answerType(item = 0, index = 0) {
     if(item === 0){
       return;
     }
     if(item.answers.length > 0){
-      return <AnswerSeveral key={index} item={item} />;
+      
+      return <AnswerSeveral key={index} item={item} handleChange={this.handleChange.bind(this)}/>;
     }
     else{
-      return <AnswerNumber key={index} item={item} />;
+      return <AnswerNumber key={index} item={item} handleChange={this.handleChange.bind(this)}/>;
     }
   }
 
