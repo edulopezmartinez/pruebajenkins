@@ -3,10 +3,11 @@ from pymongo import MongoClient
 import hashlib
 from functools import update_wrapper
 from datetime import timedelta
+import urllib.request, json
 
 app = Flask(__name__, static_url_path='')
 
-client = MongoClient('dbhost', 27017)
+client = MongoClient('localhost', 27017)
 db = client.pitufos
 
 
@@ -58,10 +59,44 @@ def get_questions():
     output = []
 
     for item in recommendation.find():
-        output.append({'question': item['question'], 'answers': item['answers'], 'type': item['type'], 'order': item['order']})
+        output.append({'question': item['question'], 'answers': item['answers'], 'technology':item['technology'], 'type': item['type'], 'order': item['order']})
 
 
     return jsonify({'result': output})
+
+@app.route('/recommendationStart', methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*')
+def get_first_question():
+    recommendation = db.recommendation
+    output = []
+
+    question = recommendation.find_one({'order': '1'})
+
+    output.append({'question': question['question'], 'answers': question['answers'], 'type': question['type'],
+                   'order': question['order']})
+    return jsonify({'result': output})
+
+
+@app.route('/recommendationKeepsGoing', methods=['POST'])
+@crossdomain(origin='*')
+def get_next_questions():
+    recommendation = db.recommendation
+    technologies = request.json['result'][0]['technologies']
+    output = []
+    mandatory = [18, 19, 20, 21]
+    for technology in technologies:
+        for answer in recommendation.find({"technology": technology}):
+            output.append({'question': answer['question'], 'answers': answer['answers'], 'type': answer['type']})
+    for i in mandatory:
+        for answer in recommendation.find({"order": i}):
+            output.append({'question': answer['question'], 'answers': answer['answers'], 'type': answer['type']})
+
+
+    return jsonify({'result': output})
+
+
+
+
 
 @app.route('/recommendation', methods=['POST'])
 def save_questions():
@@ -88,6 +123,7 @@ def delete_questions():
         output.append({'question': item['question'], 'answers': item['answers'], 'type': item['type'], 'order' : item['order']})
 
     return jsonify({'result': output})
+
 
 @app.route('/users', methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
@@ -148,10 +184,11 @@ def get_projects():
     projects = db.projects
     output = []
     for project in projects.find():
-        output.append({'technologies': project['technologies'], 'workday': project['workday'], 'schedule': project['schedule'],
+        output.append({'technologies': project['technologies'], 'telecommuting': project['telecommuting'], 'workday': project['workday'], 'schedule': project['schedule'],
                        'location': project['location']})
 
     return jsonify({'result': output})
+
 
 @app.route('/projects', methods=['POST'])
 def save_projects():
@@ -161,14 +198,94 @@ def save_projects():
     workday = request.json['workday']
     schedule = request.json['schedule']
     location = request.json['location']
+    telecommuting = request.json['telecommuting']
 
-    project_id = projects.insert({'technologies': technologies, 'workday': workday, 'schedule': schedule,
+    project_id = projects.insert({'technologies': technologies, 'telecommuting': telecommuting,'workday': workday, 'schedule': schedule,
                             'location': location})
 
     project = projects.find_one({'_id': project_id})
 
     output.append({'technologies': project['technologies'], 'workday': project['workday'], 'schedule': project['schedule'],
                    'location': project['location']})
+    return jsonify({'result': output})
+
+@app.route('/projects', methods=['DELETE'])
+def delete_projects():
+    projects = db.projects
+    projects.remove()
+    output = []
+    for item in projects.find():
+        output.append({'name': item['name'], 'description': item['description'], 'location': item['location'], 'workday' : item['workday'],
+                       'technologies': item['technologies'], 'telecommuting': item['telecommuting'], 'schedule': item['schedule']})
+
+    return jsonify({'result': output})
+
+@app.route('/emptyDatabase', methods=['DELETE'])
+def delete_all():
+    projects = db.projects
+    projects.remove()
+    users = db.users
+    users.remove()
+    recommendation = db.recommendation
+    recommendation.remove()
+    output = []
+
+    return jsonify({'result': output})
+
+
+@app.route('/projectRecommendation', methods=['POST'])
+@crossdomain(origin='*')
+def recommend_projects():
+    projects = db.projects
+    technologies = request.json['result']
+    answersAux = request.json['result']
+    answers = [] #se guardarán las preguntas enviadas por el usuario
+    answers2 = [] #se guardarán las respuestas enviadas por el usuario
+    output = []
+
+    for tec in technologies:#se guardan todas las preguntas
+        '''answers.append({'question': tec['question']}) #workea so far :)'''
+        answers.append(tec['question'])
+
+    for ans in answersAux:#se guardan todas las respuestas de las preguntas
+            answers2.append(ans['answers'])
+    #print('respuestas obtenidas' + answers2.__str__())
+
+    projectsTechnologies = []
+    projectPercentageTechnology = 0
+    projectPercentage = 0
+    for project in projects.find():
+        projectsTechnologies.extend(project['technologies']) #guardamos todas las tecnologias de cada projecto
+        projectLocation =  project['location']
+        projectWorkday = project['workday']
+        projectSchedule = project['schedule']
+        projectTelecommuting = project['telecommuting']
+        projectPercentageTechnology = 1 / (len(projectsTechnologies) + 4) #se calcula el porcentaje de cada tecnología y cada tipo de jornada, horario, teletrabajo y localización.
+        #print(projectsTechnologies)
+        for answer in answers: #se busca cada tecnología en cada pregunta
+            for pT in projectsTechnologies:
+                if pT in answer:
+                    projectPercentage += projectPercentageTechnology
+        for answ in answers2:
+            if projectLocation in answ or projectWorkday in answ or projectSchedule in answ or projectTelecommuting in answ:
+                projectPercentage += projectPercentageTechnology
+        if (projectPercentage >= 0.7): #si el proyecto matchea al menos un 70% se añade a la lista de proyectos válidos
+            del project['_id']
+            project['porcentaje'] = projectPercentage
+            output.append(project)
+        projectPercentageTechnology = 0
+        projectPercentage = 0
+        projectsTechnologies.clear()
+
+    output = sorted(output, key=lambda k: k['porcentaje'], reverse=True)#ordenar los proyectos
+    for item in output: #quitar el atributo auxiliar porcentaje
+        del item['porcentaje']
+
+    length = len(output)
+    if (length>3):
+        for i in range(3, length):
+            del output[i]
+
     return jsonify({'result': output})
 
 

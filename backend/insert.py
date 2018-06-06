@@ -1,62 +1,234 @@
 from pymongo import MongoClient
 
-client = MongoClient('dbhost', 27017)
+client = MongoClient('localhost', 27017)
 db = client.pitufos
 
 recommendation = db.recommendation
 users = db.users
-projects  = db.projects
+projects = db.projects
+
+projectsData = [
+    {
+        'name': 'Ether',
+        'description': 'Plataforma de unificación central del banco.',
+        'location': 'Vaguada',
+        'workday': 'Jornada completa',
+        'technologies': ['Maven', 'Spring', 'Hibernate', 'JUnit'],
+        'schedule': 'Por la mañana',
+        'telecommuting': '0 dias'
+    },
+    {
+        'name': 'Dia',
+        'description': 'Web online de productos.',
+        'location': 'Vaguada',
+        'workday': 'Jornada completa',
+        'technologies': ['Maven', 'Spring', 'Hibernate', 'JUnit'],
+        'schedule': 'Por la tarde',
+        'telecommuting': '0 dias'
+    },
+    {
+        'name': 'PCI',
+        'description': 'Codificación tarjetas de cŕedito',
+        'location': 'Las Tablas',
+        'workday': 'Jornada Parcial',
+        'technologies': ['Flask', 'NodeJS', 'ReactJS'],
+        'schedule': 'Por la tarde',
+        'telecommuting': '2 dias'
+    },
+    {
+        'name': 'GDPR',
+        'description': 'Adaptarse a las nuevas políticas',
+        'location': 'Vaguada',
+        'workday': 'Jornada completa',
+        'technologies': ['Maven', 'Spring', 'Hibernate'],
+        'schedule': 'Por la mañana',
+        'telecommuting': '0 dias'
+    },
+{
+        'name': 'Repsol',
+        'description': 'App movil de Repsol',
+        'location': 'Vaguada',
+        'workday': 'Jornada completa',
+        'technologies': ['Maven', 'Spring', 'Hibernate', 'JUnit'],
+        'schedule': 'Por la mañana',
+        'telecommuting': '1 dias'
+    },
+    {
+        'name': 'newSiem',
+        'description': 'Desarrollo de QRadar',
+        'location': 'Av. de Burgos',
+        'workday': 'Jornada Parcial',
+        'technologies': ['Cassandra', 'MongoDB', 'Docker', 'Polymer'],
+        'schedule': 'Indiferente',
+        'telecommuting': '1 dias'
+    },
+]
+
 
 recommendationsData = [
     {   
         'order': 1,
-        'question': '¿Qué tecnologías conoces?',
-        'answers': ['Java', 'Python', 'JavaScript', 'MongoDB'],
+        'question': '¿En qué tecnologías estás interesado?',
+        'answers': ['Java', 'Python', 'JavaScript', 'SQL', 'NoSQL', 'DevOps'],
+        'technology': '',
         'type': 'varias'
     },
     {
         'order': 2,
-        'question': '¿Cuánto sabes de Java?',
+        'technology': 'Java',
+        'question': '¿Cuánto sabes de Maven?',
         'answers': [],
         'type': 'puntuacion'
     },
     {
         'order': 3,
-        'question': '¿Cuánto sabes de Python?',
+        'technology': 'Java',
+        'question': '¿Cuánto sabes de Spring?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 3,
+        'technology': 'Java',
+        'question': '¿Cuánto sabes de Hibernate?',
         'answers': [],
         'type': 'puntuacion'
     },
     {
         'order': 4,
-        'question': '¿Cuánto sabes de JavaScript?',
+        'technology': 'Java',
+        'question': '¿Cuánto sabes de JUnit?',
         'answers': [],
         'type': 'puntuacion'
     },
     {
         'order': 5,
-        'question': '¿Cuánto sabes de MongoDB?',
+        'technology': 'Python',
+        'question': '¿Cuánto sabes de Flask?',
         'answers': [],
         'type': 'puntuacion'
     },
     {
         'order': 6,
+        'technology': 'JavaScript',
+        'question': '¿Cuánto sabes de NodeJS?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 7,
+        'technology': 'JavaScript',
+        'question': '¿Cuánto sabes de ReactJS?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 8,
+        'technology': 'JavaScript',
+        'question': '¿Cuánto sabes de Polymer?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 9,
+        'technology': 'JavaScript',
+        'question': '¿Cuánto sabes de Ember?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 10,
+        'technology': 'JavaScript',
+        'question': '¿Cuánto sabes de VueJS?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 11,
+        'technology': 'JavaScript',
+        'question': '¿Cuánto sabes de Angular?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 12,
+        'technology': 'SQL',
+        'question': '¿Cuánto sabes de MySQL?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 13,
+        'technology': 'SQL',
+        'question': '¿Cuánto sabes de MariaDB?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 14,
+        'technology': 'SQL',
+        'question': '¿Cuánto sabes de Oracle?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 15,
+        'technology': 'NoSQL',
+        'question': '¿Cuánto sabes de MongoDB?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 16,
+        'technology': 'NoSQL',
+        'question': '¿Cuánto sabes de Cassandra?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 16,
+        'technology': 'DevOps',
+        'question': '¿Cuánto sabes de Docker?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 17,
+        'technology': 'DevOps',
+        'question': '¿Cuánto sabes de Jenkins?',
+        'answers': [],
+        'type': 'puntuacion'
+    },
+    {
+        'order': 18,
         'question': '¿Qué tipo de jornada quieres?',
+        'technology': '',
         'answers':  ['Jornada completa','Jornada parcial'],
         'type': 'unica'
     },
     {
-        'order': 7,
+        'order': 19,
         'question': '¿Dónde prefieres trabajar?',
+        'technology': '',
         'answers': ['Av. de Burgos', 'Vaguada', 'Las Tablas','Alonso Martínez'],
         'type': 'varias'
     },
     {
-        'order': 8,
+        'order': 20,
         'question': '¿Qué horario prefieres?',
+        'technology': '',
         'answers': ['Por la mañana', 'Por la tarde', 'Indiferente'],
         'type': 'unica'
     },
+    {
+        'order': 21,
+        'question': '¿Cuántos días de teletrabajo prefieres',
+        'technology': '',
+        'answers': ['0 dias', '1 dias', '2 dias'],
+        'type': 'unica'
+    },
 ]
+
 usersData = [
     {
         'email': 'usuario@usuario.com', 
@@ -66,6 +238,7 @@ usersData = [
         'img': 'img/contacto1.png', 
         'description': 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
         'sendEmail': False,
+        'answers': [],
         'result': []
     },
     {
@@ -76,6 +249,7 @@ usersData = [
         'img': 'img/contacto2.png', 
         'description': 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
         'sendEmail': False,
+        'answers': [],
         'result': []
     },
     {
@@ -86,6 +260,7 @@ usersData = [
         'img': 'img/contacto3.png', 
         'description': 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
         'sendEmail': False,
+        'answers': [],
         'result': []
     },
     {
@@ -96,6 +271,7 @@ usersData = [
         'img': 'img/contacto4.png', 
         'description': 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
         'sendEmail': False,
+        'answers': [],
         'result': []
     },
     {
@@ -106,6 +282,7 @@ usersData = [
         'img': 'img/contacto5.png', 
         'description': 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
         'sendEmail': False,
+        'answers': [],
         'result': []
     }
 ]
@@ -115,5 +292,8 @@ for item in recommendationsData:
 
 for item in usersData:
     users.insert(item)
+
+for item in projectsData:
+    projects.insert(item)
 
 client.close()
