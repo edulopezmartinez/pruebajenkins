@@ -1,14 +1,9 @@
 import React, { Component } from "react";
-import {
-  Route,
-  NavLink,
-  HashRouter
-} from "react-router-dom";
-import Formacion from './Formacion';
 import Recomendacion from './Recomendacion';
 import Contactos from './Contactos';
-import logo from './logo2.png'
-
+import Formacion from './Formacion';
+import logo from './logo3.png'
+import { Route, NavLink, HashRouter } from "react-router-dom";
 
 
 
@@ -16,22 +11,37 @@ class App extends Component {
   render() {
     return (
         <HashRouter>
-        <div>
-            <header className="header2">
-                <img className="img" src={logo} />
-                <ul>
-                    <li ><NavLink exact to="/">Formación</NavLink></li>
-                    <li><NavLink to="/Recomendacion">Recomendación de proyecto</NavLink></li>
-                    <li><NavLink to="/Contactos">Contactos</NavLink></li>
-                </ul>
-            </header>
-        <div className="content">
-            <Route exact path="/" component={Formacion}/>
-            <Route path="/Recomendacion" component={Recomendacion}/>
-            <Route path="/Contactos" component={Contactos}/>
-        </div>
-      </div>
-      </HashRouter>
+            <div>
+                <header>
+                    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+                        <a href="/#/" className="navbar-brand" >
+                            <img className="img" src={logo} />
+                        </a>
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul className="nav navbar-nav navbar-right">
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" exact to="/">Formación</NavLink>
+                                </li>
+                                <li class="nav-item">
+                                    <NavLink className="nav-link" to="/recomendacion">Recomendacion de proyecto</NavLink>
+                                </li>
+                                <li class="nav-item">
+                                    <NavLink className="nav-link" to="/contactos">Tus Compañeros</NavLink>
+                                </li> 
+                            
+                            </ul>
+                        </div>
+                    </nav>
+                </header>
+                <div>
+                    <Route exact path="/" component={Formacion}/>
+                    <Route path="/recomendacion" component={Recomendacion}/>
+                    <Route path="/contactos" component={Contactos}/>
+                </div>
+            </div>
+        </HashRouter>
     );
   }
 }
