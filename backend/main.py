@@ -70,7 +70,9 @@ def get_first_question():
     recommendation = db.recommendation
     output = []
 
-    question = recommendation.find_one({'order': '1'})
+    question = recommendation.find_one({'order': 1})
+
+    print(question)
 
     output.append({'question': question['question'], 'answers': question['answers'], 'type': question['type'],
                    'order': question['order']})
