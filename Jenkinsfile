@@ -10,9 +10,7 @@ pipeline {
     }
         stage('Functional tests') {
             steps {
-                script {
-                    echo "FUNCIONA"
+                echo "FUNCIONA"
                 }
-            }
         }
 }
