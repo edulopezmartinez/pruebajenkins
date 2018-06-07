@@ -8,9 +8,11 @@ pipeline {
             numToKeepStr: '10'
         ]))
     }
-        stage('Functional tests') {
+    stages {    
+        stage('prueba funciona') {
             steps {
                 echo "FUNCIONA"
                 }
         }
+    }
 }
